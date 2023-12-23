@@ -11,6 +11,7 @@ import Container from './Container';
 import styles from './Nav.module.css';
 import Spacer from './Spacer';
 import Wrapper from './Wrapper';
+import Cookies from 'js-cookie';
 
 const UserMenu = ({ user, mutate }) => {
   const menuRef = useRef();
@@ -43,6 +44,9 @@ const UserMenu = ({ user, mutate }) => {
   }, []);
 
   const onSignOut = useCallback(async () => {
+    Cookies.remove('loggedin');
+    Cookies.remove('uname');
+    router.replace('/');
     try {
       await fetcher('/api/auth', {
         method: 'DELETE',
@@ -71,19 +75,17 @@ const UserMenu = ({ user, mutate }) => {
       >
         {visible && (
           <div className={styles.menu}>
-            <Link passHref href={`/user/${user.username}`}>
-              <a className={styles.item}>Profile</a>
+            <Link
+              passHref
+              href={`/user/${user.username}`}
+              className={styles.item}
+            >
+              Profile
             </Link>
-            <Link passHref href="/settings">
-              <a className={styles.item}>Settngs</a>
+            <Link passHref href="/settings" className={styles.item}>
+              Settngs
             </Link>
-            <div className={styles.item} style={{ cursor: 'auto' }}>
-              <Container alignItems="center">
-                <span>Theme</span>
-                <Spacer size={0.5} axis="horizontal" />
-                <ThemeSwitcher />
-              </Container>
-            </div>
+            
             <button onClick={onSignOut} className={styles.item}>
               Sign out
             </button>
@@ -105,8 +107,8 @@ const Nav = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Link href="/">
-            <a className={styles.logo}>QRMech</a>
+          <Link href="/" className={styles.logo}>
+            QRMech
           </Link>
           <Container>
             {user ? (
@@ -115,7 +117,7 @@ const Nav = () => {
               </>
             ) : (
               <>
-                <Link passHref href="/">
+                <Link passHref href="/" legacyBehavior>
                   <ButtonLink
                     size="small"
                     type="success"
@@ -126,7 +128,7 @@ const Nav = () => {
                   </ButtonLink>
                 </Link>
                 <Spacer axis="horizontal" size={0.25} />
-                <Link passHref href="/sign-up">
+                <Link passHref href="/sign-up" legacyBehavior>
                   <Button size="small" type="success">
                     Sign Up
                   </Button>

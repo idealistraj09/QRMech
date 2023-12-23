@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import styles from './Auth.module.css';
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const emailRef = useRef();
@@ -19,15 +20,12 @@ const Login = () => {
 
   const { data: { user } = {}, mutate, isValidating } = useCurrentUser();
   const router = useRouter();
-  useEffect(() => {
-    if (isValidating) return;
-    if (user) router.replace('/dashboard');
-  }, [user, router, isValidating]);
 
   const onSubmit = useCallback(
     async (event) => {
       setIsLoading(true);
       event.preventDefault();
+
       try {
         const response = await fetcher('/api/auth', {
           method: 'POST',
@@ -37,6 +35,9 @@ const Login = () => {
             password: passwordRef.current.value,
           }),
         });
+        Cookies.set('loggedin', 'true');
+        router.push('/');
+        Cookies.set('uname', 'duqidij');
         mutate({ user: response.user }, false);
         toast.success('You have been logged in.');
       } catch (e) {
@@ -47,7 +48,6 @@ const Login = () => {
     },
     [mutate]
   );
-
   return (
     <Wrapper className={styles.root}>
       <div className={styles.main}>
@@ -83,7 +83,7 @@ const Login = () => {
             Log in
           </Button>
           <Spacer size={0.25} axis="vertical" />
-          <Link href="/forget-password" passHref>
+          <Link href="/forget-password" passHref legacyBehavior>
             <ButtonLink type="success" size="large" variant="ghost">
               Forget password
             </ButtonLink>
@@ -91,7 +91,7 @@ const Login = () => {
         </form>
       </div>
       <div className={styles.footer}>
-        <Link href="/sign-up" passHref>
+        <Link href="/sign-up" passHref legacyBehavior>
           <TextLink color="link" variant="highlight">
             Don&apos;t have an account? Sign Up
           </TextLink>

@@ -1,14 +1,17 @@
-// pages/dashboard.jsx
+import { Login } from '@/page-components/Auth';
+import DashboardPage from '@/page-components/dashboard/dashboard';
+import Head from 'next/head';
 
-import PrivateRoute from '../components/PrivateRoute'; 
 
 const Dashboard = () => {
   return (
-    <div>
-      <h1>Dashboard</h1> 
-      <p>Sensitive info here</p>
-    </div>
-  )
-}
+    <>
+      <Head>
+        <title>Login</title>
+      </Head>
+      <DashboardPage />
+    </>
+  );
+};
 
-export default PrivateRoute(Dashboard);
+export default Dashboard;

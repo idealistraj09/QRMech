@@ -15,6 +15,9 @@ const SignUp = () => {
   const passwordRef = useRef();
   const usernameRef = useRef();
   const nameRef = useRef();
+  const carnicknameref = useRef();
+  const carmodelnameref = useRef();
+  const carnoplateref = useRef();
 
   const { mutate } = useCurrentUser();
 
@@ -27,7 +30,7 @@ const SignUp = () => {
       e.preventDefault();
       try {
         setIsLoading(true);
-        const response = await fetcher('/api/users', {
+        const userResponse = await fetcher('/api/users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -35,9 +38,12 @@ const SignUp = () => {
             name: nameRef.current.value,
             password: passwordRef.current.value,
             username: usernameRef.current.value,
+            carnickname: carnicknameref.current.value,
+            carmodelname: carmodelnameref.current.value,
+            carnoplate: carnoplateref.current.value,
           }),
         });
-        mutate({ user: response.user }, false);
+        mutate({ user: userResponse.user }, false);
         toast.success('Your account has been created');
         router.replace('/');
       } catch (e) {
@@ -100,6 +106,37 @@ const SignUp = () => {
             required
           />
           <Spacer size={1} axis="vertical" />
+          <Container alignItems="center">
+            <p className={styles.subtitle}>car details</p>
+            <div className={styles.seperator} />
+          </Container>
+          <Input
+            ref={carnicknameref}
+            autoComplete="carnickname"
+            placeholder="carnickname"
+            ariaLabel="carnickname"
+            size="large"
+            required
+          />
+          <Spacer size={0.5} axis="vertical" />
+          <Input
+            ref={carmodelnameref}
+            autoComplete="carmodelname"
+            placeholder="carmodelname"
+            ariaLabel="carmodelname"
+            size="large"
+            required
+          />
+          <Spacer size={0.5} axis="vertical" />
+          <Input
+            ref={carnoplateref}
+            autoComplete="carnoplate"
+            placeholder="carnoplate"
+            ariaLabel="carnoplate"
+            size="large"
+            required
+          />
+          <Spacer size={0.5} axis="vertical" />
           <Button
             htmlType="submit"
             className={styles.submit}
@@ -112,7 +149,7 @@ const SignUp = () => {
         </form>
       </div>
       <div className={styles.footer}>
-        <Link href="/" passHref>
+        <Link href="/" passHref legacyBehavior>
           <TextLink color="link" variant="highlight">
             Already have an account? Log in
           </TextLink>
