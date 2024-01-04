@@ -30,14 +30,14 @@ const SignUp = () => {
       e.preventDefault();
       try {
         setIsLoading(true);
-        const userResponse = await fetcher('/api/users', {
+        const userResponse = await fetch('/api/users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email: emailRef.current.value,
-            name: nameRef.current.value,
             password: passwordRef.current.value,
             username: usernameRef.current.value,
+            name: nameRef.current.value,
             carnickname: carnicknameref.current.value,
             carmodelname: carmodelnameref.current.value,
             carnoplate: carnoplateref.current.value,
@@ -45,10 +45,11 @@ const SignUp = () => {
         });
         mutate({ user: userResponse.user }, false);
         toast.success('Your account has been created');
-        router.replace('/');
+        router.replace('/dashboard');
       } catch (e) {
         toast.error(e.message);
       } finally {
+        // setIsLoading(true);
         setIsLoading(false);
       }
     },

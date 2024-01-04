@@ -63,6 +63,7 @@ export async function insertUser(
     carnickname,
     carmodelname,
     carnoplate,
+    credit='',
   }
 ) {
   const user = {
@@ -75,6 +76,7 @@ export async function insertUser(
     carnickname,
     carmodelname,
     carnoplate,
+    credit,
   };
   const password = await bcrypt.hash(originalPassword, 10);
   const { insertedId } = await db

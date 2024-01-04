@@ -37,7 +37,9 @@ const Login = () => {
         });
         Cookies.set('loggedin', 'true');
         router.push('/');
-        Cookies.set('uname', 'duqidij');
+        // console.log(user)
+        console.log(response.user.username);
+        Cookies.set('uname', response.user.username);
         mutate({ user: response.user }, false);
         toast.success('You have been logged in.');
       } catch (e) {

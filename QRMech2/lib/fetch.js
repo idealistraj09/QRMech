@@ -5,6 +5,7 @@ export const fetcher = (...args) => {
       if (res.status === 204) return null; // 204 does not have body
       payload = await res.json();
     } catch (e) {
+      console.log(e.message);
       /* noop */
     }
     if (res.ok) {
